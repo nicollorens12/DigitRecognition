@@ -50,11 +50,9 @@ class CustomNeuralNetwork:
 
             # Linear combination of weights, inputs and biases to get the resulting activation values (before sigmoid squeezification)
             Z = np.dot(params['W'+str(l)], A_prev) + params['b'+str(l)]
-            print(f"Forward layer {l}: Z.shape = {Z.shape}",flush=True) 
 
             # Storing the linear cache
             linear_cache = (A_prev, params['W'+str(l)], params['b'+str(l)])
-            print(f"Forward layer {l}: A.shape = {A.shape}",flush=True) 
 
             # Applying sigmoid on linear hypothesis
             A, activation_cache = self.sigmoid(Z) #activation_cache is Z before sigmoid
@@ -63,7 +61,6 @@ class CustomNeuralNetwork:
             caches.append(cache)
         
         A = self.softmax(A)
-        print(f"Output softmax: A.shape = {A.shape}",flush=True)
         return A, caches
 
 
@@ -71,49 +68,60 @@ class CustomNeuralNetwork:
     #A is a value between 0 and 1 (thanks to the sigmoid function) but Y is binary (0 or 1) that indicate the real class 
     def cost_function(self, A, Y):
         m = Y.shape[1]
-        cost = -np.sum(Y * np.log(A)) / m
+        cost = -np.sum(Y * np.log(A + 1e-8)) / m  # Añadir epsilon para evitar log(0)
         return cost
 
 
-    def oneLayerBackward(self, dA, cache):
-        A_prev, W, b, Z = cache
-        m = A_prev.shape[1]
+
+    def oneLayerBackward(self, dA, cache, activation):
+        linear_cache, activation_cache = cache
+        A_prev, W, b = linear_cache
         
-        # Sigmoid backward
-        A, _ = self.sigmoid(Z)
-        dZ = dA * A * (1 - A)
+        if activation == "softmax":
+            dZ = dA  # dA es directamente dZ para softmax con entropía cruzada
+        else:
+            Z = activation_cache  # Recupera Z desde el activation_cache
+            A, _ = self.sigmoid(Z)
+            dZ = dA * A * (1 - A)  # Derivada de sigmoid
+        
+        m = A_prev.shape[1]
         dW = np.dot(dZ, A_prev.T) / m
         db = np.sum(dZ, axis=1, keepdims=True) / m
         dA_prev = np.dot(W.T, dZ)
-
+        
         return dA_prev, dW, db
+
+
 
     #Backprop is the process of updating the weights and biases of the network to minimize the cost function
     #Pre: The activation values of the last layer of our NN, the real values and the caches
     #Post: Returns the gradients of the weights and biases
     def backprop(self, AL, Y, caches):
         grads = {}
-        L = len(caches)
+        L = len(caches)  # Número de capas
         m = AL.shape[1]
         Y = Y.reshape(AL.shape)
         
         assert AL.shape == Y.shape, f"Dimensiones incompatibles: AL {AL.shape}, Y {Y.shape}"
 
-        dAL = -(np.divide(Y, AL) - np.divide(1-Y, 1-AL))
+        # Derivada del costo con respecto a la salida de la última capa
+        dAL = -(np.divide(Y, AL) - np.divide(1 - Y, 1 - AL))
 
+        # Calcular los gradientes para la última capa (usando sigmoid en este ejemplo)
         current_cache = caches[L-1]
-        grads['dA'+str(L-1)], grads['dW'+str(L-1)], grads['db'+str(L-1)] = self.oneLayerBackward(dAL, current_cache)
+        grads['dA' + str(L-1)], grads['dW' + str(L)], grads['db' + str(L)] = self.oneLayerBackward(dAL, current_cache, activation="sigmoid")
 
+        # Calcular los gradientes para las capas anteriores (usando relu en este ejemplo)
         for l in reversed(range(L-1)):
             current_cache = caches[l]
-            dA_prev_temp, dW_temp, db_temp = self.oneLayerBackward(grads["dA" + str(l+1)], current_cache)
+            dA_prev_temp, dW_temp, db_temp = self.oneLayerBackward(grads["dA" + str(l+1)], current_cache, activation="relu")
             grads["dA" + str(l)] = dA_prev_temp
-            grads["dW" + str(l)] = dW_temp  # Corregir el índice aquí
-            grads["db" + str(l)] = db_temp  # Corregir el índice aquí
-
-            assert dW_temp.shape == grads["dW" + str(l)].shape, f"Dimensiones inesperadas en dW{l}"
+            grads["dW" + str(l+1)] = dW_temp
+            grads["db" + str(l+1)] = db_temp
 
         return grads
+
+
 
 
 
