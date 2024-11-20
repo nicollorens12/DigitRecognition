@@ -16,26 +16,10 @@ export default function Home() {
   const predictDigit = async () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-
-    // Reescalar el dibujo a 28x28
-    const scaledCanvas = document.createElement('canvas');
-    scaledCanvas.width = 28;
-    scaledCanvas.height = 28;
-    const scaledCtx = scaledCanvas.getContext('2d');
-    scaledCtx.drawImage(canvas, 0, 0, 28, 28);
-
-    // Obtener los datos en escala de grises
-    const imageData = scaledCtx.getImageData(0, 0, 28, 28);
-    const grayscaleData = [];
-    for (let i = 0; i < imageData.data.length; i += 4) {
-      const grayscale = Math.round(
-        0.299 * imageData.data[i] +
-        0.587 * imageData.data[i + 1] +
-        0.114 * imageData.data[i + 2]
-      );
-      grayscaleData.push(grayscale);
-    }
-
+  
+    // Obtener los datos en bruto de la imagen
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  
     try {
       // Realizar el request a la API
       const response = await fetch("http://127.0.0.1:8000/model/predict/", {
@@ -43,9 +27,9 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ image: grayscaleData }),
+        body: JSON.stringify({ image: Array.from(imageData.data) }),
       });
-
+  
       const data = await response.json();
       if (response.ok) {
         setPrediction(data.prediction); // Mostrar la predicción
@@ -58,10 +42,12 @@ export default function Home() {
       setPrediction("Error al conectar con la API");
     }
   };
+  
 
   const startDrawing = (e) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+    ctx.lineWidth = 10; // Set the line width to 5
     ctx.beginPath();
     ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     canvas.isDrawing = true;
