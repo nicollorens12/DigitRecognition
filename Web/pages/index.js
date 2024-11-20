@@ -47,7 +47,7 @@ export default function Home() {
   const startDrawing = (e) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    ctx.lineWidth = 10; // Set the line width to 5
+    ctx.lineWidth = 20; // Set the line width to 5
     ctx.beginPath();
     ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     canvas.isDrawing = true;

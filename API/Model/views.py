@@ -53,9 +53,9 @@ def predict_digit(request):
 
                 # Convertir RGBA a escala de grises
                 grayscale_image = np.dot(rgba_data[..., :3], [0.299, 0.587, 0.114]).astype(np.uint8)
-
+                inverted_grayscale_image = 255 - grayscale_image
                 # Reescalar a 28x28
-                pil_image = Image.fromarray(grayscale_image, 'L')
+                pil_image = Image.fromarray(inverted_grayscale_image, 'L')
                 resized_image = pil_image.resize((28, 28), Image.LANCZOS)
 
                 # Guardar la imagen procesada
