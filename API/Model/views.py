@@ -11,8 +11,8 @@ from .serializers import ImageSerializer  # Importa el serializer
 import pickle
 
 # Cargar el modelo preentrenado
-pretrained_params = CustomNeuralNetwork.load_params('Model/model.h5')
-model = CustomNeuralNetwork(pretrained_params=pretrained_params)
+model = CustomNeuralNetwork()
+model.load_params("Model/model.h5")
 
 @swagger_auto_schema(
     method='post',
@@ -46,13 +46,8 @@ def predict_digit(request):
                 # Normalizar los datos si es necesario
                 image = image / 255.0  # Asegurarse de que los valores estén entre 0 y 1
                 
-                params = None
-
-                with open("Model/params.pkl", "rb") as file:
-                    params = pickle.load(file)
-
                 # Realizar la predicción
-                prediction = model.predict(image,params)  # Aplanar si necesario
+                prediction = model.predict(image)  # Aplanar si necesario
                 
                 return JsonResponse({'prediction': int(prediction)})
             else:
