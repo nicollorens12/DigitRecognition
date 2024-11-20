@@ -2,6 +2,9 @@ import numpy as np
 import pickle
 
 class CustomNeuralNetwork:
+    def __int__(self):
+        pass
+
     def __init__(self, layer_dims=None, epochs=None, lr=None, pretrained_params=None):
         if pretrained_params:
             self.layer_dims = pretrained_params['layer_dims']
@@ -9,6 +12,7 @@ class CustomNeuralNetwork:
             self.lr = pretrained_params['lr']
             self.params = pretrained_params['params']
         else:
+            print("Initializing new model")
             self.layer_dims = layer_dims
             self.epochs = epochs
             self.lr = lr
@@ -130,7 +134,9 @@ class CustomNeuralNetwork:
 
         return self.params, cost_history
     
-    def predict(self, X, parameters):
+    def predict(self, X, parameters=None):
+        if parameters is None:
+            parameters = self.params
         Y_hat, _ = self.forward_prop(X, parameters)
         predictions = np.argmax(Y_hat, axis=0)
         return predictions
@@ -146,10 +152,13 @@ class CustomNeuralNetwork:
             pickle.dump(data, f)
 
     @staticmethod
-    def load_params(file_path):
+    def load_params(self, file_path):
         with open(file_path, 'rb') as f:
             data = pickle.load(f)
-        return data
+        self.layer_dims = data['layer_dims']
+        self.epochs = data['epochs']
+        self.lr = data['lr']
+        self.params = data['params']
 
 # Example usage:
 # nn = CustomNeuralNetwork(layer_dims=[784, 128, 10], epochs=1000, lr=0.01)

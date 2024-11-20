@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.container {
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(90deg, rgba(3,218,136,1) 0%, rgba(1,131,81,1) 25%, rgba(6,64,67,1) 50%, rgba(9,45,85,1) 75%, rgba(118,23,172,1) 100%);
+  background-size: 400% 400%;
+  animation: gradientFlow 25s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0.5rem 0;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #f7f7f7;
+  margin: 0.5rem 0 2rem 0;
+}
+
+.githubLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-decoration: none;
+  margin-bottom: 2rem;
+}
+
+.githubIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+}
+
+.canvasContainer {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.drawingCanvas {
+  border: 3px solid #ffffff;
+  background-color: #ffffff;
+  border-radius: 10px;
+  cursor: crosshair;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #ffffff;
+  color: rgba(118,23,172,1);
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popupContent {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.processedImage {
+  width: 100px;
+  height: 100px;
+  margin: 1rem 0;
+}
+
+.popupButtons {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.popupButton {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popupButton:hover {
+  background-color: #ddd;
+}
+
