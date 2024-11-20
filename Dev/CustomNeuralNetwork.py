@@ -130,7 +130,7 @@ class CustomNeuralNetwork:
 
         return self.params, cost_history
     
-    def predict(self, X, parameters):
+    def predict(self, X, parameters=None):
         Y_hat, _ = self.forward_prop(X, parameters)
         predictions = np.argmax(Y_hat, axis=0)
         return predictions

@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.container {
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+  background-size: 400% 400%;
+  animation: gradientFlow 25s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0.5rem 0;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #f7f7f7;
+  margin: 0.5rem 0 2rem 0;
+}
+
+.githubLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-decoration: none;
+  margin-bottom: 2rem;
+}
+
+.githubIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+}
+
+.canvasContainer {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.drawingCanvas {
+  border: 3px solid #ffffff;
+  background-color: #ffffff;
+  border-radius: 10px;
+  cursor: crosshair;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #ffffff;
+  color: #ff6f91;
+}
