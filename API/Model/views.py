@@ -9,6 +9,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .serializers import ImageSerializer  # Importa el serializer
 from PIL import Image
+import os
 
 model = CustomNeuralNetwork("Model/model.h5")
 
@@ -47,9 +48,10 @@ def predict_digit(request):
                 # Establecemos los píxeles con canal alfa == 0 a blanco (255, 255, 255)
                 rgba_data[rgba_data[..., 3] == 0] = [255, 255, 255, 255]
 
-                # Guardar la imagen con fondo blanco
-                raw_image = Image.fromarray(rgba_data, 'RGBA')
-                raw_image.save('Model/data/raw_image_with_white_background.png')
+                DEBUG = os.getenv('DEBUG')
+                if DEBUG:
+                    raw_image = Image.fromarray(rgba_data, 'RGBA')
+                    raw_image.save('Model/data/raw_image_with_white_background.png')
 
                 # Convertir RGBA a escala de grises
                 grayscale_image = np.dot(rgba_data[..., :3], [0.299, 0.587, 0.114]).astype(np.uint8)
@@ -59,7 +61,8 @@ def predict_digit(request):
                 resized_image = pil_image.resize((28, 28), Image.LANCZOS)
 
                 # Guardar la imagen procesada
-                resized_image.save('Model/data/resized_image.png')
+                if DEBUG:
+                    resized_image.save('Model/data/resized_image.png')
 
                 # Aplanar y normalizar
                 flattened_image = np.array(resized_image).flatten()

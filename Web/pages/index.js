@@ -22,7 +22,8 @@ export default function Home() {
   
     try {
       // Realizar el request a la API
-      const response = await fetch("http://127.0.0.1:8000/model/predict/", {
+      const API_URL = process.env.DEBUG ? "localhost:8000" : "https://digitrecognition-mhek.onrender.com";
+      const response = await fetch(`${API_URL}/model/predict/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
