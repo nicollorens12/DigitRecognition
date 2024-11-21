@@ -17,3 +17,10 @@ Study.ipynb, is just now a way to understand the Dataset and create a first simp
 - Improve API canvas/image processing as it produces poor results on diferent scenarios (Digit not centered, too big, too small, or not very "Handwritten")
 - Add a Fine Tunning section to Study.ipynb as I think more improvements can be made to enhance performance of the model.
 - Add a feedback option on the prediction to create more instances for the dataset so the model can be improved for digits written with a mouse/trackpadd.
+
+## Website Images
+![Texto alternativo](Web/assets/Prueba1.png)
+![Texto alternativo](Web/assets/Prueba3.png)
+![Texto alternativo](Web/assets/Prueba2.png)
+![Texto alternativo](Web/assets/Prueba7.png)
+
