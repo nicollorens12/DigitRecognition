@@ -19,8 +19,8 @@ Study.ipynb, is just now a way to understand the Dataset and create a first simp
 - Add a feedback option on the prediction to create more instances for the dataset so the model can be improved for digits written with a mouse/trackpadd.
 
 ## Website Images
-![Texto alternativo](Web/assets/Prueba1.png)
-![Texto alternativo](Web/assets/Prueba3.png)
-![Texto alternativo](Web/assets/Prueba2.png)
-![Texto alternativo](Web/assets/Prueba7.png)
+![Texto alternativo](Web/assets/Prueba1.PNG)
+![Texto alternativo](Web/assets/Prueba3.PNG)
+![Texto alternativo](Web/assets/Prueba2.PNG)
+![Texto alternativo](Web/assets/Prueba7.PNG)
 
