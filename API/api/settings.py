@@ -27,9 +27,13 @@ load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['digitrecognition-mhek.onrender.com']
+
+WEBAPP_URL = os.getenv('WEBAPP_URL')
+if DEBUG:
+    WEBAPP_URL = 'http://localhost:3000'
 
 
 # Application definition
