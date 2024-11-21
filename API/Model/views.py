@@ -37,23 +37,18 @@ def predict_digit(request):
             if serializer.is_valid():
                 rgba_data = np.array(serializer.validated_data['image'], dtype=np.uint8)
 
-                # Verificar si el tamaño es válido
-                if len(rgba_data) != 280 * 280 * 4:  # Canvas original de 280x280 con RGBA
+                if len(rgba_data) != 280 * 280 * 4: 
                     return JsonResponse({'error': 'Invalid image shape, must be 280x280 with RGBA'}, status=400)
 
-                # Convertir a una matriz 280x280x4
                 rgba_data = rgba_data.reshape((280, 280, 4))
 
-                # Reemplazar el fondo transparente con blanco (o cualquier otro color)
-                # Establecemos los píxeles con canal alfa == 0 a blanco (255, 255, 255)
                 rgba_data[rgba_data[..., 3] == 0] = [255, 255, 255, 255]
 
-                DEBUG = os.getenv('DEBUG')
-                if DEBUG:
-                    raw_image = Image.fromarray(rgba_data, 'RGBA')
-                    raw_image.save('Model/data/raw_image_with_white_background.png')
+                #DEBUG = os.getenv('DEBUG')
+                #if DEBUG:
+                #    raw_image = Image.fromarray(rgba_data, 'RGBA')
+                #    raw_image.save('Model/data/raw_image_with_white_background.png')
 
-                # Convertir RGBA a escala de grises
                 grayscale_image = np.dot(rgba_data[..., :3], [0.299, 0.587, 0.114]).astype(np.uint8)
                 inverted_grayscale_image = 255 - grayscale_image
                 # Reescalar a 28x28
@@ -61,14 +56,12 @@ def predict_digit(request):
                 resized_image = pil_image.resize((28, 28), Image.LANCZOS)
 
                 # Guardar la imagen procesada
-                if DEBUG:
-                    resized_image.save('Model/data/resized_image.png')
+                #if DEBUG:
+                #    resized_image.save('Model/data/resized_image.png')
 
-                # Aplanar y normalizar
                 flattened_image = np.array(resized_image).flatten()
                 normalized_image = flattened_image / 255.0
 
-                # Realizar la predicción
                 prediction = model.predict(normalized_image)
 
                 return JsonResponse({'prediction': int(prediction)})
