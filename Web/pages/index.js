@@ -22,7 +22,14 @@ export default function Home() {
   
     try {
       // Realizar el request a la API
-      const API_URL = process.env.DEBUG ? "localhost:8000" : "https://digitrecognition-mhek.onrender.com";
+      let API_URL = "";
+      const isDebug = process.env.NEXT_PUBLIC_DEBUG === 'true';
+      if (isDebug) {
+        API_URL = "http://localhost:8000";  // Asegúrate de usar http://
+      } else {
+        API_URL = "https://digitrecognition-mhek.onrender.com";
+      }
+
       const response = await fetch(`${API_URL}/model/predict/`, {
         method: "POST",
         headers: {
