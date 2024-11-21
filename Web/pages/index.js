@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import styles from '../styles/index.module.css';
 import { FaGithub } from "react-icons/fa";
 
@@ -6,11 +6,31 @@ export default function Home() {
   const canvasRef = useRef(null);
   const [prediction, setPrediction] = useState(null);
 
+  useEffect(() => {
+    // Desactivar gestos de desplazamiento en el área del canvas
+    const canvas = canvasRef.current;
+
+    const preventTouchScroll = (e) => {
+      e.preventDefault(); // Previene el desplazamiento del navegador
+    };
+
+    canvas.addEventListener('touchstart', preventTouchScroll, { passive: false });
+    canvas.addEventListener('touchmove', preventTouchScroll, { passive: false });
+    canvas.addEventListener('touchend', preventTouchScroll, { passive: false });
+
+    return () => {
+      // Limpia los event listeners cuando el componente se desmonte
+      canvas.removeEventListener('touchstart', preventTouchScroll);
+      canvas.removeEventListener('touchmove', preventTouchScroll);
+      canvas.removeEventListener('touchend', preventTouchScroll);
+    };
+  }, []);
+
   const clearCanvas = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setPrediction(null); // Clear the prediction as well
+    setPrediction(null);
   };
 
   const predictDigit = async () => {
@@ -49,13 +69,14 @@ export default function Home() {
   };
 
   const startDrawing = (e) => {
+    e.preventDefault(); // Evitar el comportamiento predeterminado
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    ctx.lineWidth = 5; // Set the line width to 5
+    ctx.lineWidth = 5;
     ctx.beginPath();
 
-    const offsetX = e.nativeEvent.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
-    const offsetY = e.nativeEvent.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
+    const offsetX = e.nativeEvent?.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
+    const offsetY = e.nativeEvent?.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
     ctx.moveTo(offsetX, offsetY);
 
     canvas.isDrawing = true;
@@ -63,6 +84,7 @@ export default function Home() {
 
   const draw = (e) => {
     if (!canvasRef.current.isDrawing) return;
+    e.preventDefault(); // Evitar el desplazamiento de la página mientras se dibuja
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
@@ -73,7 +95,8 @@ export default function Home() {
     ctx.stroke();
   };
 
-  const stopDrawing = () => {
+  const stopDrawing = (e) => {
+    e.preventDefault(); // Evitar el comportamiento predeterminado
     const canvas = canvasRef.current;
     canvas.isDrawing = false;
   };
@@ -103,6 +126,7 @@ export default function Home() {
           onTouchStart={startDrawing}
           onTouchMove={draw}
           onTouchEnd={stopDrawing}
+          style={{ touchAction: 'none' }} // Evitar gestos predeterminados como desplazamiento
         ></canvas>
       </div>
       <div className={styles.buttonContainer}>
