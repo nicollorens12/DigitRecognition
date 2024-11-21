@@ -16,16 +16,13 @@ export default function Home() {
   const predictDigit = async () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-  
-    // Obtener los datos en bruto de la imagen
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  
+
     try {
-      // Realizar el request a la API
       let API_URL = "";
       const isDebug = process.env.NEXT_PUBLIC_DEBUG === 'true';
       if (isDebug) {
-        API_URL = "http://localhost:8000";  // Asegúrate de usar http://
+        API_URL = "http://localhost:8000";
       } else {
         API_URL = "https://digitrecognition-mhek.onrender.com";
       }
@@ -37,10 +34,10 @@ export default function Home() {
         },
         body: JSON.stringify({ image: Array.from(imageData.data) }),
       });
-  
+
       const data = await response.json();
       if (response.ok) {
-        setPrediction(data.prediction); // Mostrar la predicción
+        setPrediction(data.prediction);
       } else {
         console.error(data.error);
         setPrediction("Error: " + data.error);
@@ -50,14 +47,17 @@ export default function Home() {
       setPrediction("Error al conectar con la API");
     }
   };
-  
 
   const startDrawing = (e) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     ctx.lineWidth = 5; // Set the line width to 5
     ctx.beginPath();
-    ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+
+    const offsetX = e.nativeEvent.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
+    const offsetY = e.nativeEvent.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
+    ctx.moveTo(offsetX, offsetY);
+
     canvas.isDrawing = true;
   };
 
@@ -65,7 +65,11 @@ export default function Home() {
     if (!canvasRef.current.isDrawing) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+
+    const offsetX = e.nativeEvent?.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
+    const offsetY = e.nativeEvent?.offsetY || e.touches[0].clientY - canvas.getBoundingClientRect().top;
+
+    ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
   };
 
@@ -79,9 +83,12 @@ export default function Home() {
       <h1 className={styles.title}>Digit Recognition App</h1>
       <h2 className={styles.subtitle}>Made by Nico Llorens</h2>
       <div className={styles.instructionsContainer}>
-
-          <a href='https://github.com/nicollorens12/DigitRecognition' className={styles.link}><FaGithub size={32} /></a>
-          <a href='https://github.com/nicollorens12/DigitRecognition' className={styles.link}>Source Code</a>
+        <a href='https://github.com/nicollorens12/DigitRecognition' className={styles.link}>
+          <FaGithub size={32} />
+        </a>
+        <a href='https://github.com/nicollorens12/DigitRecognition' className={styles.link}>
+          Source Code
+        </a>
       </div>
       <div className={styles.canvasContainer}>
         <canvas
@@ -93,6 +100,9 @@ export default function Home() {
           onMouseMove={draw}
           onMouseUp={stopDrawing}
           onMouseLeave={stopDrawing}
+          onTouchStart={startDrawing}
+          onTouchMove={draw}
+          onTouchEnd={stopDrawing}
         ></canvas>
       </div>
       <div className={styles.buttonContainer}>
