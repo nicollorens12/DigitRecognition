@@ -1,10 +1,12 @@
 import { useRef, useState, useEffect } from 'react';
 import styles from '../styles/index.module.css';
 import { FaGithub } from "react-icons/fa";
+import LoadingSpinner from '../components/LoadingSpinner';  // Importa el componente
 
 export default function Home() {
   const canvasRef = useRef(null);
   const [prediction, setPrediction] = useState(null);
+  const [loading, setLoading] = useState(false);  // Nuevo estado para controlar la carga
 
   useEffect(() => {
     // Desactivar gestos de desplazamiento en el área del canvas
@@ -34,6 +36,7 @@ export default function Home() {
   };
 
   const predictDigit = async () => {
+    setLoading(true); // Activa el estado de carga
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -65,6 +68,8 @@ export default function Home() {
     } catch (error) {
       console.error("Error al conectar con la API:", error);
       setPrediction("Error al conectar con la API");
+    } finally {
+      setLoading(false);  // Desactiva el estado de carga
     }
   };
 
@@ -134,7 +139,7 @@ export default function Home() {
           Erase
         </button>
         <button onClick={predictDigit} className={styles.button}>
-          Predict
+          {loading ? <LoadingSpinner /> : 'Predict'}  {/* Muestra el spinner o el texto */}
         </button>
       </div>
       {prediction !== null ? (
