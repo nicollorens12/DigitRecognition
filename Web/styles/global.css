@@ -1,10 +1,15 @@
-/* Reset básico */
-body, html {
-  margin: 0;
+/* globals.css */
+html, body {
+  height: 100%;  /* Asegura que el HTML y el body ocupen todo el alto */
+  margin: 0 !important;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* globals.css */
 * {
-  box-sizing: inherit;
+  margin: 0;  /* Elimina el margen de todos los elementos */
+  padding: 0;  /* Elimina el padding de todos los elementos */
+  box-sizing: border-box;  /* Asegura que el tamaño de los elementos no se vea afectado por bordes o padding */
 }
+

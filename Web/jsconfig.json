@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".", // Define la base de las rutas como la raíz del proyecto
+      "paths": {
+        "@styles/*": ["styles/*"], // Ejemplo para una carpeta de estilos
+        "@pages/*": ["pages/*"], // Ejemplo para una carpeta de páginas
+      }
+    }
+  }

@@ -70,15 +70,11 @@ export default function Home() {
     <div className={styles.container}>
       <h1 className={styles.title}>Digit Recognition App</h1>
       <h2 className={styles.subtitle}>Made by Nico Llorens</h2>
-      <a
-        href="https://github.com/nicollorens12/DigitRecognition"
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.githubLink}
-      >
-        <FaGithub />
-         Source Code
-      </a>
+      <div className={styles.instructionsContainer}>
+
+          <a href='https://github.com/nicollorens12/DigitRecognition' className={styles.link}><FaGithub size={32} /></a>
+          <a href='https://github.com/nicollorens12/DigitRecognition' className={styles.link}>Source Code</a>
+      </div>
       <div className={styles.canvasContainer}>
         <canvas
           ref={canvasRef}
@@ -99,8 +95,12 @@ export default function Home() {
           Predict
         </button>
       </div>
-      {prediction !== null && (
-        <p className={styles.predictionText}>Prediction: {prediction}</p>
+      {prediction !== null ? (
+        <div className={styles.predictionContainer}>
+          <p className={styles.predictionText}>Prediction: {prediction}</p>
+        </div>
+      ) : (
+        <div className={styles.blankSpace}></div>
       )}
     </div>
   );
