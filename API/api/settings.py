@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ['digitrecognition-mhek.onrender.com']
+ALLOWED_HOSTS = ['digitrecognition-mhek.onrender.com', 'localhost']
 
 WEBAPP_URL = os.getenv('WEBAPP_URL')
 if DEBUG:
