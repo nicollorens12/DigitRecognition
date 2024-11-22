@@ -36,42 +36,37 @@ export default function Home() {
   };
 
   const predictDigit = async () => {
-    setLoading(true); // Activa el estado de carga
+    setLoading(true);
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
+    
     try {
-      let API_URL = "";
-      const isDebug = process.env.NEXT_PUBLIC_DEBUG === 'true';
-      if (isDebug) {
-        API_URL = "http://localhost:8000";
-      } else {
-        API_URL = "https://digitrecognition-mhek.onrender.com";
-      }
+        // Convierte el canvas en una imagen base64
+        const base64Image = canvas.toDataURL("image/png").split(",")[1]; // Elimina el prefijo 'data:image/png;base64,'
 
-      const response = await fetch(`${API_URL}/model/predict/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ image: Array.from(imageData.data) }),
-      });
+        const response = await fetch("https://aqac1jeaca.execute-api.eu-west-3.amazonaws.com/default/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ image: base64Image }),
+        });
 
-      const data = await response.json();
-      if (response.ok) {
-        setPrediction(data.prediction);
-      } else {
-        console.error(data.error);
-        setPrediction("Error: " + data.error);
-      }
+        const data = await response.json();
+        if (response.ok) {
+            setPrediction(data.Prediction.replace(/[ \[\]]/g, ''));
+        } else {
+            console.error(data.Error);
+            setPrediction("Error: " + data.Error);
+        }
     } catch (error) {
-      console.error("Error al conectar con la API:", error);
-      setPrediction("Error al conectar con la API");
+        console.error("Error al conectar con la API:", error);
+        setPrediction("Error al conectar con la API");
     } finally {
-      setLoading(false);  // Desactiva el estado de carga
+        setLoading(false);
     }
-  };
+};
+
+  
 
   const startDrawing = (e) => {
     e.preventDefault(); // Evitar el comportamiento predeterminado
