@@ -72,7 +72,7 @@ export default function Home() {
     e.preventDefault(); // Evitar el comportamiento predeterminado
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 20;
     ctx.beginPath();
 
     const offsetX = e.nativeEvent?.offsetX || e.touches[0].clientX - canvas.getBoundingClientRect().left;
