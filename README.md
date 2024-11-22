@@ -1,6 +1,14 @@
-## Information
 :construction: This project is still under testing, several improvements are expected on the future :construction:
 
+## Information
+
+This project is divided in 3 folders:
+
+- [`Dev`](https://github.com/nicollorens12/DigitRecognition/tree/main/Dev): Training and study of the model and data.
+- [`Lambda`](https://github.com/nicollorens12/DigitRecognition/tree/main/Lambda): The code for the a CustomNeuralNetwork to be loaded,process the image to be similar as MNIST dataset one and then let the model predict the drawn digit. This is deployed on AWS Lambda service.
+- [`Web`](https://github.com/nicollorens12/DigitRecognition/tree/main/Web): Made with NextJS, the simple, one-page website for sending to an API Gateway that then redirect the event to the Lambda a 280x280 drawing of a digit and showing the result.
+
+## Motivation
 
 As part of my journey on learning more about Data Science and DL, I wanted to learn how NN work exactly and how to used them.
 
