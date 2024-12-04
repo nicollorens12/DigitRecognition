@@ -5,8 +5,8 @@
 This project is divided in 3 folders:
 
 - [`Dev`](https://github.com/nicollorens12/DigitRecognition/tree/main/Dev): Training and study of the model and data.
-- [`Lambda`](https://github.com/nicollorens12/DigitRecognition/tree/main/Lambda): The code for the a CustomNeuralNetwork to be loaded,process the image to be similar as MNIST dataset one and then let the model predict the drawn digit. This is deployed on AWS Lambda service.
-- [`Web`](https://github.com/nicollorens12/DigitRecognition/tree/main/Web): Made with NextJS, the simple, one-page website for sending to an API Gateway that then redirect the event to the Lambda a 280x280 drawing of a digit and showing the result.
+- [`Lambda`](https://github.com/nicollorens12/DigitRecognition/tree/main/Lambda): The code for the a CustomNeuralNetwork to be loaded,processes the image to be similar as MNIST dataset one and then let the model predict the drawn digit. This is deployed on AWS Lambda service.
+- [`Web`](https://github.com/nicollorens12/DigitRecognition/tree/main/Web): Made with NextJS, the simple, one-page website for sending to an API Gateway that redirects the event to the Lambda. The event is a 280x280 drawing of a digit. The response is the predicted digit.
 
 ## Motivation
 
