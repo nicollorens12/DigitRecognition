@@ -26,7 +26,7 @@ class CustomNeuralNetwork:
     def initParams(self, layer_dims): 
         np.random.seed(3)
         params = {}
-        L = len(layer_dims)  # Total number of layers
+        L = len(layer_dims)
 
         for l in range(1, L):
             params['W'+str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) * np.sqrt(2 / layer_dims[l-1])
@@ -139,7 +139,6 @@ class CustomNeuralNetwork:
         return self.params, cost_history
     
     def predict(self, X):
-        # Asegúrate de que X tenga al menos 2 dimensiones
         if X.ndim == 1:
             X = X.reshape(-1, 1)
         Y_hat, _ = self.forward_prop(X)
@@ -162,10 +161,3 @@ class CustomNeuralNetwork:
         with open(file_path, 'rb') as f:
             data = pickle.load(f)
         return data
-
-# Example usage:
-# nn = CustomNeuralNetwork(layer_dims=[784, 128, 10], epochs=1000, lr=0.01)
-# nn.train(X_train, Y_train, nn.layer_dims)
-# nn.save_params('model_params.pkl')
-# pretrained_params = CustomNeuralNetwork.load_params('model_params.pkl')
-# nn_pretrained = CustomNeuralNetwork(pretrained_params=pretrained_params)
